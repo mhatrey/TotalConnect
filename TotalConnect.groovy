@@ -154,7 +154,7 @@ def armStay() {
 
             def paramsArm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/ArmSecuritySystem",
-    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.deviceId, ArmType: 0, UserCode: '-1']
+    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.deviceId, ArmType: 1, UserCode: '-1']
     			]
    			httpPost(paramsArm) // Arming function in stay mode
             def metaData = panelMetaData(token) // Gets AlarmCode
