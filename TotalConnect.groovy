@@ -14,13 +14,14 @@
  *
  */
  /*
- Version: v0.2
- Changes
+ Version: v0.3
+ Changes [August 30, 2015]
  	- Logic to check if the Arm/DisArm signal actually implemented or not.
+    - User dont have to input LocationID & DeviceID. Its been capatured from the response now.
  
  */
 definition(
-    name: "TotalConnect v0.2",
+    name: "TotalConnect v0.3",
     namespace: "Security",
     author: "Yogesh Mhatre",
     description: "Total Connect App to lock/unlock your home based on your location and mode",
@@ -28,12 +29,8 @@ definition(
     iconUrl: "https://s3.amazonaws.com/yogi/TotalConnect/150.png",
     iconX2Url: "https://s3.amazonaws.com/yogi/TotalConnect/300.png")
 
-
 preferences {
-	/*section ("Select mode") {
-    	input("mode1", "mode", multiple: false)
-    }*/
-	section ("Give your credentials") {
+	section ("Give your Total Connect credentials. Recommended to make another user for SmartThings") {
     	input("userName", "text", title: "Username", description: "Your username for TotalConnect")
     	input("password", "password", title: "Password", description: "Your Password for TotalConnect")
     	input("ApplicationID", "text", title: "Application ID", description: "Application ID")
@@ -102,10 +99,9 @@ Map panelMetaData(token) {
     def lastSequenceNumber
     def lastUpdatedTimestampTicks
     def partitionId
-	//log.debug "Token at PanelMetadata is " + token
  	def getPanelMetaDataAndFullStatus = [
     									uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/GetPanelMetaDataAndFullStatus",
-        								body: [ SessionID: token, LocationID: LOCATIONID, LastSequenceNumber: 0, LastUpdatedTimestampTicks: 0, PartitionID: 1]
+        								body: [ SessionID: token, LocationID: 395502, LastSequenceNumber: 0, LastUpdatedTimestampTicks: 0, PartitionID: 1]
     ]
    	httpPost(getPanelMetaDataAndFullStatus) {	response -> 
         										lastUpdatedTimestampTicks = response.data.PanelMetadataAndStatus.'@LastUpdatedTimestampTicks'
@@ -118,23 +114,36 @@ Map panelMetaData(token) {
   return [alarmCode: alarmCode, lastSequenceNumber: lastSequenceNumber, lastUpdatedTimestampTicks: lastUpdatedTimestampTicks]
 } //Should return alarmCode, lastSequenceNumber & lastUpdateTimestampTicks
 
+Map getSessionDetails(token) {
+	def locationId
+    def deviceId
+    
+ 	def getSessionParams = [
+    						uri: "https://rs.alarmnet.com/tc21api/tc2.asmx/GetSessionDetails",
+        					body: [ SessionID: token, ApplicationID: '14588', ApplicationVersion: '3.2.2']
+    ]
+   	httpPost(getSessionParams) { responseSession -> 
+        						 locationId = responseSession.data.Locations.LocationInfoBasic.LocationID
+        						 deviceId = responseSession.data.Locations.LocationInfoBasic.DeviceList.DeviceInfoBasic.DeviceID
+        									
+    }
+	log.debug "Info is: ${locationId} and ${deviceId}"
+  return [locationId: locationId, deviceId: deviceId]
+} // Should return LocationID & DeviceID
+
 // Arm Function. Performs arming function
 def armAway() {        
         	def token = login(token)
+            def details = getSessionDetails (token) // Get Location & Device ID
             def paramsArm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/ArmSecuritySystem",
-    			body: [SessionID: token, LocationID: LOCATIONID, DeviceID: DEVICEID, ArmType: 0, UserCode: '-1']
+    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.DeviceId, ArmType: 0, UserCode: '-1']
     			]
    			httpPost(paramsArm) // Arming Function in away mode
-            def a = panelMetaData(token)
-            //log.debug "Alarm Code in In arm function " + a.alarmCode
-            //log.debug "lastSequenceNumber in In arm function " + a.lastSequenceNumber  
-            //log.debug "lastUpdatedTimestampTicks in In arm function " + a.lastUpdatedTimestampTicks  
-          	def i = 0
-            while( a.alarmCode != 10201 ){ 
-            	log.debug "Number of times Metadata executed)" + i++
-                pause(1000) // One Second Pause to relieve number of retried on while loop
-                a = panelMetaData(token)
+            def metaData = panelMetaData(token) // Get AlarmCode
+            while( metaData.alarmCode != 10201 ){ 
+                pause(1500) // One Second Pause to relieve number of retried on while loop
+                metaData = panelMetaData(token)
              }  
            sendPush("Home is now Armed successfully")     
    logout(token)
@@ -142,15 +151,17 @@ def armAway() {
 
 def armStay() {        
         	def token = login(token)
+            def details = getSessionDetails (token) // Get Location & Device ID
+
             def paramsArm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/ArmSecuritySystem",
-    			body: [SessionID: token, LocationID: 395502, DeviceID: DEVICEID, ArmType: 1, UserCode: '-1']
+    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.DeviceId, ArmType: 0, UserCode: '-1']
     			]
    			httpPost(paramsArm) // Arming function in stay mode
-            def a = panelMetaData(token)
-            while( a.alarmCode != 10203 ){ 
-                pause(1000) // One Second Pause to relieve number of retried on while loop
-                a = panelMetaData(token)
+            def metaData = panelMetaData(token) // Gets AlarmCode
+            while( metaData.alarmCode != 10203 ){ 
+                pause(1500) // One Second Pause to relieve number of retried on while loop
+                metaData = panelMetaData(token)
              }   
  			sendPush("Home is armed in Night mode")
     logout(token)
@@ -158,17 +169,17 @@ def armStay() {
 
 def disarm() {
 			def token = login(token)
-				log.debug "During disarming. ${token}"
+            def details = getSessionDetails (token) // Get Location & Device ID
 
         	def paramsDisarm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/DisarmSecuritySystem",
-    			body: [SessionID: token, LocationID: LOCATIONID, DeviceID: DEVICEID, UserCode: '-1']
+    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.DeviceId, ArmType: 0, UserCode: '-1']
     			]
    			httpPost(paramsDisarm)  
-            def a = panelMetaData(token)
-            while( a.alarmCode != 10200 ){ 
-                pause(1000) // One Second Pause to relieve number of retried on while loop
-                a = panelMetaData(token)
+            def metaData = panelMetaData(token) // Gets AlarmCode
+            while( metaData.alarmCode != 10200 ){ 
+                pause(1500) // One Second Pause to relieve number of retried on while loop
+                metaData = panelMetaData(token)
              }
            sendPush("Home is now Disarmed")
 	logout(token)
