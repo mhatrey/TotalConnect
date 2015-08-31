@@ -172,7 +172,7 @@ def disarm() {
 
         	def paramsDisarm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/DisarmSecuritySystem",
-    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.deviceId, ArmType: 0, UserCode: '-1']
+    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.deviceId, UserCode: '-1']
     			]
    			httpPost(paramsDisarm)  
             def metaData = panelMetaData(token) // Gets AlarmCode
