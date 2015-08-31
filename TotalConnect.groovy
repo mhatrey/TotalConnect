@@ -117,7 +117,6 @@ Map panelMetaData(token) {
 Map getSessionDetails(token) {
 	def locationId
     def deviceId
-    
  	def getSessionParams = [
     						uri: "https://rs.alarmnet.com/tc21api/tc2.asmx/GetSessionDetails",
         					body: [ SessionID: token, ApplicationID: '14588', ApplicationVersion: '3.2.2']
@@ -127,7 +126,7 @@ Map getSessionDetails(token) {
         						 deviceId = responseSession.data.Locations.LocationInfoBasic.DeviceList.DeviceInfoBasic.DeviceID
         									
     }
-	log.debug "Info is: ${locationId} and ${deviceId}"
+	log.debug "Location ID: ${locationId}, DeviceId: ${deviceId}"
   return [locationId: locationId, deviceId: deviceId]
 } // Should return LocationID & DeviceID
 
@@ -137,7 +136,7 @@ def armAway() {
             def details = getSessionDetails (token) // Get Location & Device ID
             def paramsArm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/ArmSecuritySystem",
-    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.DeviceId, ArmType: 0, UserCode: '-1']
+    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.deviceId, ArmType: 0, UserCode: '-1']
     			]
    			httpPost(paramsArm) // Arming Function in away mode
             def metaData = panelMetaData(token) // Get AlarmCode
@@ -155,7 +154,7 @@ def armStay() {
 
             def paramsArm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/ArmSecuritySystem",
-    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.DeviceId, ArmType: 0, UserCode: '-1']
+    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.deviceId, ArmType: 0, UserCode: '-1']
     			]
    			httpPost(paramsArm) // Arming function in stay mode
             def metaData = panelMetaData(token) // Gets AlarmCode
@@ -173,7 +172,7 @@ def disarm() {
 
         	def paramsDisarm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/DisarmSecuritySystem",
-    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.DeviceId, ArmType: 0, UserCode: '-1']
+    			body: [SessionID: token, LocationID: details.locationId, DeviceID: details.deviceId, ArmType: 0, UserCode: '-1']
     			]
    			httpPost(paramsDisarm)  
             def metaData = panelMetaData(token) // Gets AlarmCode
