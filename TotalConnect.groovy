@@ -105,7 +105,7 @@ Map panelMetaData(token) {
 	//log.debug "Token at PanelMetadata is " + token
  	def getPanelMetaDataAndFullStatus = [
     									uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/GetPanelMetaDataAndFullStatus",
-        								body: [ SessionID: token, LocationID: 395502, LastSequenceNumber: 0, LastUpdatedTimestampTicks: 0, PartitionID: 1]
+        								body: [ SessionID: token, LocationID: LOCATIONID, LastSequenceNumber: 0, LastUpdatedTimestampTicks: 0, PartitionID: 1]
     ]
    	httpPost(getPanelMetaDataAndFullStatus) {	response -> 
         										lastUpdatedTimestampTicks = response.data.PanelMetadataAndStatus.'@LastUpdatedTimestampTicks'
@@ -123,7 +123,7 @@ def armAway() {
         	def token = login(token)
             def paramsArm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/ArmSecuritySystem",
-    			body: [SessionID: token, LocationID: 395502, DeviceID: 509622, ArmType: 0, UserCode: '-1']
+    			body: [SessionID: token, LocationID: LOCATIONID, DeviceID: DEVICEID, ArmType: 0, UserCode: '-1']
     			]
    			httpPost(paramsArm) // Arming Function in away mode
             def a = panelMetaData(token)
@@ -144,7 +144,7 @@ def armStay() {
         	def token = login(token)
             def paramsArm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/ArmSecuritySystem",
-    			body: [SessionID: token, LocationID: 395502, DeviceID: 509622, ArmType: 1, UserCode: '-1']
+    			body: [SessionID: token, LocationID: 395502, DeviceID: DEVICEID, ArmType: 1, UserCode: '-1']
     			]
    			httpPost(paramsArm) // Arming function in stay mode
             def a = panelMetaData(token)
@@ -162,7 +162,7 @@ def disarm() {
 
         	def paramsDisarm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/DisarmSecuritySystem",
-    			body: [SessionID: token, LocationID: 395502, DeviceID: 509622, UserCode: '-1']
+    			body: [SessionID: token, LocationID: LOCATIONID, DeviceID: DEVICEID, UserCode: '-1']
     			]
    			httpPost(paramsDisarm)  
             def a = panelMetaData(token)
