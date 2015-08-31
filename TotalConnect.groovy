@@ -17,7 +17,7 @@
  Version: v0.3
  Changes [August 30, 2015]
  	- Logic to check if the Arm/DisArm signal actually implemented or not.
-    - User dont have to input LocationID & DeviceID. Its been capatured from the response now.
+    	- User dont have to input LocationID & DeviceID. Its been capatured from the response now.
  
  */
 definition(
