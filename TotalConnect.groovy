@@ -17,6 +17,7 @@
  Version: v0.3.1
  Changes [November 12th, 2015]
  	- Added ability to select Total Connect Location for users with multiple Locations. For sigle location users, it will default to your location
+ 	- Implemented logic to successfully message. Though there is room for improvement
  	
  Version: v0.3.
  Changes [August 30th, 2015]
@@ -210,62 +211,62 @@ Map getSessionDetails(token) {
 // Arm Function. Performs arming function
 def armAway() {        
         	def token = login(token)
-            def details = getSessionDetails (token) // Gets Map of Location
+    	def details = getSessionDetails(token) // Gets Map of Location
             // log.debug "This was Selected " + settings.selectedLocation
-            def locationName = settings.selectedLocation
-            def locationId = details.locationMap[locationName]
+    	def locationName = settings.selectedLocation
+    	def locationId = details.locationMap[locationName]
             // log.debug "ArmAway Function. Location ID is " + locationId
-            def deviceId = details.deviceMap[locationName]
+    	def deviceId = details.deviceMap[locationName]
             // log.debug "ArmAway Function. Device ID is " + deviceId
             
-            def paramsArm = [
+    	def paramsArm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/ArmSecuritySystem",
     			body: [SessionID: token, LocationID: locationId, DeviceID: deviceId, ArmType: 0, UserCode: '-1']
     			]
    			httpPost(paramsArm) // Arming Function in away mode
-            /*def metaData = panelMetaData(token, locationId) // Get AlarmCode
+        def metaData = panelMetaData(token, locationId) // Get AlarmCode
             while( metaData.alarmCode != 10201 ){ 
                 pause(3000) // 3 Seconds Pause to relieve number of retried on while loop
                 metaData = panelMetaData(token, locationId)
-            }*/  
+            }  
             //log.debug "Home is now Armed successfully" 
             sendPush("Home is now Armed successfully")     
    logout(token)
 }
 
 def armStay() {        
-        	def token = login(token)
-            def details = getSessionDetails (token) // Gets Map of Location
+	def token = login(token)
+    	def details = getSessionDetails(token) // Gets Map of Location
             // log.debug "This was Selected " + settings.selectedLocation
-            def locationName = settings.selectedLocation
-            def locationId = details.locationMap[locationName]
+    	def locationName = settings.selectedLocation
+    	def locationId = details.locationMap[locationName]
             // log.debug "ArmStay Function. Location ID is " + locationId
-            def deviceId = details.deviceMap[locationName]
+    	def deviceId = details.deviceMap[locationName]
             // log.debug "ArmStay Function. Device ID is " + deviceId
             
-            def paramsArm = [
+    	def paramsArm = [
     			uri: "https://rs.alarmnet.com/TC21API/TC2.asmx/ArmSecuritySystem",
     			body: [SessionID: token, LocationID: locationId, DeviceID: deviceId, ArmType: 1, UserCode: '-1']
     			]
    			httpPost(paramsArm) // Arming function in stay mode
-            /*def metaData = panelMetaData(token, locationId) // Gets AlarmCode
+    	def metaData = panelMetaData(token, locationId) // Gets AlarmCode
             while( metaData.alarmCode != 10203 ){ 
                 pause(3000) // 3 Seconds Pause to relieve number of retried on while loop
                 metaData = panelMetaData(token, locationId)
-            }*/  
+            } 
             //log.debug "Home is now Armed for Night successfully"     
  			sendPush("Home is armed in Night mode successfully")
     logout(token)
 }
 
 def disarm() {
-			def token = login(token)
-            def details = getSessionDetails (token) // Get Location & Device ID
+	def token = login(token)
+        def details = getSessionDetails(token) // Get Location & Device ID
             // log.debug "This was Selected " + settings.selectedLocation
-            def locationName = settings.selectedLocation
-            def deviceId = details.locationMap[locationName]
+        def locationName = settings.selectedLocation
+    	def deviceId = details.deviceMap[locationName]
             // log.debug "DisArm Function. Device ID is " + deviceId
-            def locationId = details.deviceMap[locationName]
+    	def locationId = details.locationMap[locationName]
             // log.debug "DisArm Function. Location ID is " + locationId
 
         	def paramsDisarm = [
@@ -273,11 +274,11 @@ def disarm() {
     			body: [SessionID: token, LocationID: locationId, DeviceID: deviceId, UserCode: '-1']
     			]
    			httpPost(paramsDisarm)  
-            /*def metaData = panelMetaData(token, locationId) // Gets AlarmCode
-           	while( metaData.alarmCode != 10200 ){ 
+   	def metaData = panelMetaData(token, locationId) // Gets AlarmCode
+        	while( metaData.alarmCode != 10200 ){ 
                 pause(3000) // 3 Seconds Pause to relieve number of retried on while loop
                 metaData = panelMetaData(token, locationId)
-            }*/
+            }
            // log.debug "Home is now Disarmed successfully"   
            sendPush("Home is now Disarmed successfully")
 	logout(token)
