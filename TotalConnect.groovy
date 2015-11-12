@@ -17,7 +17,6 @@
  Version: v0.3.1
  Changes [November 12th, 2015]
  	- Added ability to select Total Connect Location for users with multiple Locations. For sigle location users, it will default to your location
- 	- Squashed some bugs that would cause some inconsistencies in successful messaging.
  	
  Version: v0.3.
  Changes [August 30th, 2015]
