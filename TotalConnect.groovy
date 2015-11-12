@@ -224,11 +224,11 @@ def armAway() {
     			body: [SessionID: token, LocationID: locationId, DeviceID: deviceId, ArmType: 0, UserCode: '-1']
     			]
    			httpPost(paramsArm) // Arming Function in away mode
-            def metaData = panelMetaData(token, locationId) // Get AlarmCode
+            /*def metaData = panelMetaData(token, locationId) // Get AlarmCode
             while( metaData.alarmCode != 10201 ){ 
                 pause(3000) // 3 Seconds Pause to relieve number of retried on while loop
                 metaData = panelMetaData(token, locationId)
-            }  
+            }*/  
             //log.debug "Home is now Armed successfully" 
             sendPush("Home is now Armed successfully")     
    logout(token)
@@ -249,11 +249,11 @@ def armStay() {
     			body: [SessionID: token, LocationID: locationId, DeviceID: deviceId, ArmType: 1, UserCode: '-1']
     			]
    			httpPost(paramsArm) // Arming function in stay mode
-            def metaData = panelMetaData(token, locationId) // Gets AlarmCode
+            /*def metaData = panelMetaData(token, locationId) // Gets AlarmCode
             while( metaData.alarmCode != 10203 ){ 
                 pause(3000) // 3 Seconds Pause to relieve number of retried on while loop
                 metaData = panelMetaData(token, locationId)
-            }  
+            }*/  
             //log.debug "Home is now Armed for Night successfully"     
  			sendPush("Home is armed in Night mode successfully")
     logout(token)
@@ -274,11 +274,11 @@ def disarm() {
     			body: [SessionID: token, LocationID: locationId, DeviceID: deviceId, UserCode: '-1']
     			]
    			httpPost(paramsDisarm)  
-            def metaData = panelMetaData(token, locationId) // Gets AlarmCode
+            /*def metaData = panelMetaData(token, locationId) // Gets AlarmCode
            	while( metaData.alarmCode != 10200 ){ 
                 pause(3000) // 3 Seconds Pause to relieve number of retried on while loop
                 metaData = panelMetaData(token, locationId)
-            }
+            }*/
            // log.debug "Home is now Disarmed successfully"   
            sendPush("Home is now Disarmed successfully")
 	logout(token)
