@@ -14,6 +14,10 @@
  *
  */
  /*
+ Version: v0.3.2 
+ Changes [June 10th, 2017]
+ 	- Location listing correction.
+    
  Version: v0.3.1
  Changes [November 12th, 2015]
  	- Added ability to select Total Connect Location for users with multiple Locations. For sigle location users, it will default to your location
@@ -27,7 +31,7 @@
  */
  
 definition(
-    name: "TotalConnect v0.3.1",
+    name: "TotalConnect v0.3.2",
     namespace: "Security",
     author: "Yogesh Mhatre",
     description: "Total Connect App to lock/unlock your home based on your location and mode",
@@ -36,25 +40,25 @@ definition(
     iconX2Url: "https://s3.amazonaws.com/yogi/TotalConnect/300.png")
 
 preferences {
-    page(name: "credentials", title: "Total Connect Login", nextPage: "locationList", uninstall: false) {
-        section ("Give your Total Connect credentials. Recommended to make another user for SmartThings") {
+    page(name: "credentials", title: "Total Connect Login", nextPage: "locationList", uninstall: true) {
+        section ("Give your Total Connect credentials. It is recommended to make another total connect user for SmartThings. This user should have a passcode set") {
     		input("userName", "text", title: "Username", description: "Your username for TotalConnect")
     		input("password", "password", title: "Password", description: "Your Password for TotalConnect")
     		input("applicationId", "text", title: "Application ID - It is '14588' currently", description: "Application ID")
     		input("applicationVersion", "text", title: "Application Version", description: "Application Version")
 			}
     	}
-    page(name: "locationList", title: "Select the Total Connection Location for this App", nextPage: "success", content:"locationList")
-    page(name: "success")
+    page(name: "locationList", title: "Select the Total Connect Location for this App", uninstall: true, install: true)
 }
 
 // Start of Page Functions
 private locationList(params=[:]){
 	def locations = locationFound()
-    def options = locations.keySet() ?: []
-	return dynamicPage(name:"locationList", title:"Pulling up the Location List!", install: true, uninstall: true) {
+    def optionList = locations.keySet() as List
+    log.debug optionList
+	return dynamicPage(name:"locationList", title:"Pulling up the Location List!", uninstall: true) {
 		section("Select from the following Locations for Total Connect.") {
-			input "selectedLocation", "enum", required:true, title:"Select the Location", multiple:false, options:options
+			input(name: "selectedLocation", type: "enum", required: true, title: "Select the Location", options:optionList, multiple: false)
 		}
 	}
 }
@@ -95,14 +99,6 @@ Map locationFound() {
         		log.debug "Smart Things has successfully logged out during settings"
         	}
     return locationMap
-}
-def success() {
-
-    dynamicPage(name: "success") {
-        section {
-            image "https://s3.amazonaws.com/yogi/TotalConnect/success.jpg"
-        }
-    }
 }
 // End of Page Functions
 
