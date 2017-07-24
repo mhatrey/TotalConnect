@@ -51,5 +51,3 @@ This app is a different beast in all together and gives you lot of flexibility. 
 
 ---
 Hope this was helpful. Cheers!
-
-By the way, @Oendaril, @jhstroebel, if you have a moment, check my code at the following line - https://github.com/mhatrey/TotalConnect/blob/async/TotalConnect.groovy#L71. I wrote this to pull Location information for users that have multiple Alarms. I'm not particularly happy about implementing a pause and a while loop, but if you can a) use the following/similar logic in your code to completely automate this for your app users and b) help me write a better logic in implementing this, it would be appreciated. Thanks!
