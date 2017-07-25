@@ -4,9 +4,9 @@ NOTE: There are many awesome implementations for TotalConnect Alarm by folks in 
 
 ## List of Apps/DeviceHandlers for TotalConnect SmartThings Integration
 
-### SmartApp based on modes/Smart Home Monitor Status
+### > SmartApp based on SmartThings Modes/Smart Home Monitor Status
 ---
-Mode based Code: https://github.com/mhatrey/TotalConnect/blob/async/TotalConnect.groovy | Author: @mhatrey
+Mode based Code: https://github.com/mhatrey/TotalConnect/blob/master/ModesBased.groovy | Author: @mhatrey
 
 I wrote this SmartApp for simple automation based modes/routines of SmartThings. This is a very minimalistic app and I prefer not to dwindle much besides this, but there's lot more you can do using rest of the apps/device handlers written by folks in this thread. Functionality of the app - 
 
@@ -16,11 +16,11 @@ I wrote this SmartApp for simple automation based modes/routines of SmartThings.
 
 With this latest version,  I have implemented a way of automatically pulling LocationID & DeviceID, so all you need to enter are your user credentials.
 
-I have added a SmartApp based on Smart Home Monitor Status
+I have also added a SmartApp based on Smart Home Monitor Status (SHM), which will trigger alarming actions based on SHM
 
-Code: https://github.com/mhatrey/TotalConnect/blob/async/TotalConnectSHM.groovy | Author: @mhatrey 
+Code: https://github.com/mhatrey/TotalConnect/blob/master/SHMBased.groovy | Author: @mhatrey 
 
-### DeviceHandler that act as Panel as well as Virtualized Lock/Switch
+### > DeviceHandler that act as Panel as well as Virtualized Lock/Switch
 ---
 Code: https://github.com/Oendaril/TotalConnectAsync/blob/master/TCAsync.groovy | Author: @Oendaril 
 
@@ -38,7 +38,7 @@ Once the device is created you will have to edit and fill in preferences that co
 
 To find LocationID & DeviceID @Oendaril has written a crafty SmartApp that you can run in the simulator to fetch that. Install the following code as a SmartApp and get that - https://github.com/Oendaril/TotalConnectAsync/blob/master/TCTesterAsync.groovy
 
-### Complete TotalConnect Panel
+### > Complete TotalConnect Panel
 ---
 Code: Go to [SmartApps](https://graph.api.smartthings.com/ide/apps) > Click Settings (Top Right) > Add a Repository with the following information 
 - Owner: jhstroebel
@@ -49,5 +49,3 @@ Author: @jhstroebel
  
 This app is a different beast in all together and gives you lot of flexibility. I have not installed this app, so I have no experience using it.
 
----
-Hope this was helpful. Cheers!
