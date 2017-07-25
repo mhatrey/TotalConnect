@@ -1,5 +1,6 @@
 /**
- *  TotalConnect
+ *  TotalConnect 
+ *  # Deprecated
  *
  *  Copyright 2014 Yogesh Mhatre
  *
