@@ -5,7 +5,6 @@ NOTE: There are many awesome implementations for TotalConnect Alarm by folks in 
 ## List of Apps/DeviceHandlers for TotalConnect SmartThings Integration
 
 ### > SmartApp based on SmartThings Modes/Smart Home Monitor Status
----
 Mode based Code: https://github.com/mhatrey/TotalConnect/blob/master/ModesBased.groovy | Author: @mhatrey
 
 I wrote this SmartApp for simple automation based modes/routines of SmartThings. This is a very minimalistic app and I prefer not to dwindle much besides this, but there's lot more you can do using rest of the apps/device handlers written by folks in this thread. Functionality of the app - 
@@ -21,7 +20,6 @@ I have also added a SmartApp based on Smart Home Monitor Status (SHM), which wil
 Code: https://github.com/mhatrey/TotalConnect/blob/master/SHMBased.groovy | Author: @mhatrey 
 
 ### > DeviceHandler that act as Panel as well as Virtualized Lock/Switch
----
 Code: https://github.com/Oendaril/TotalConnectAsync/blob/master/TCAsync.groovy | Author: @Oendaril 
 
 This device handler is written to as a SmartThings Device i.e. a virtualized Lock & Light and performs arming actions based on Lock ON/OFF & Switch ON/OFF. Notably
@@ -39,7 +37,6 @@ Once the device is created you will have to edit and fill in preferences that co
 To find LocationID & DeviceID @Oendaril has written a crafty SmartApp that you can run in the simulator to fetch that. Install the following code as a SmartApp and get that - https://github.com/Oendaril/TotalConnectAsync/blob/master/TCTesterAsync.groovy
 
 ### > Complete TotalConnect Panel
----
 Code: Go to [SmartApps](https://graph.api.smartthings.com/ide/apps) > Click Settings (Top Right) > Add a Repository with the following information 
 - Owner: jhstroebel
 - Name: SmartThings-TCv2
