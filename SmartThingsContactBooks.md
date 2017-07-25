@@ -1,3 +1,4 @@
+## Enabling Contact Books
 To enable contact books on your SmartThings account,
 
 - a) Log on to https://graph.api.smartthings.com/account/
@@ -10,9 +11,8 @@ Once imported, the contact options (below image) will enabled on your SmartPhone
 
 ![ContactBook](http://imgur.com/n617zaT.jpg)
 
----
-
+## Using ContactBook in TotalConnect SmartApp
 Once enabled, ContactBook will appear during the confirmation page of the TotalConnect SmartApp. The workflow works like this
 
 - a) if contactBook not enabled: all the members of this location will receive push notifications.
-- b) if enabled, they will get the abilityt to Select the contacts that are setup or add a new contact. It looks like this ![contactbookselection](http://imgur.com/MoivZ26.jpg)
+- b) if enabled, they will get the ability to Select the contacts that are setup or add a new contact. It looks like this ![contactbookselection](http://imgur.com/MoivZ26.jpg)
