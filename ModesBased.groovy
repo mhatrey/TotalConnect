@@ -107,7 +107,7 @@ def confirmation(){
   log.debug "DeviceId is $deviceId & LocationId is $locationId"
   dynamicPage(name: "confirmation", title: "Selected LocationID & DeviceID", uninstall: true, install: true) {
     section("DO NOT CHANGE - These values are fetched from your selected Location.") {
-      paragraph "If your DeviceID is larger than 7 digits, please use the first 7 digits and remove the rest."
+      paragraph "If your DeviceID is larger than 6 digits, please use the first 6 digits and remove the rest."
       input(name: "locationId", type: "text", required: true, title: "LocationID", defaultValue: locationId)
       input(name: "deviceId", type: "text", required: true, title: "DeviceID", defaultValue: deviceId)
     }
